@@ -9,33 +9,32 @@ class ExcelReader:
 		self.worksheets = self.workbook.sheets()
 
 
-	def gsc(self, a, b):
-		return self.get_sheet_col(a, b)
-
 	# Get column(s) in sheet, concatenated
 	# when you specify a range
 	#
 	# si is the sheet #
 	# ci can be a tuple or int
-	def get_sheet_col(self, si, ci):
+	def get_sheet_cols(self, si, ci):
 		bounds = self.check_bounds_type(ci)
 		values = [] # Values to geocode (the return value)
 		sheet = self.worksheets[si]
 		num_rows = sheet.nrows - 1
 		curr_row = 0
 
-		while curr_row < num_rows:
-			row = sheet.row(curr_row)
-
-			if type(bounds) == tuple:
+		if type(bounds) == tuple:
+			while curr_row < num_rows:
 				temp_vals = []
 				for i in range(bounds[0], bounds[1] + 1):
 					cv = self.cellval(sheet.cell(curr_row, i), self.workbook.datemode)
 					temp_vals.append(cv)
-
 				values.append(" ".join(temp_vals))
+				curr_row += 1
 
-			curr_row += 1
+		if type(bounds) == int:
+			while curr_row < num_rows:
+				cv = self.cellval(sheet.cell(curr_row, bounds), self.workbook.datemode)
+				values.append(cv)
+				curr_row += 1
 
 		return values;
 
@@ -52,7 +51,7 @@ class ExcelReader:
 		# 
 
 		elif type(ci) == int or type(ci) == float:
-			return round(ci)
+			return int(round(ci))
 		else:
 			raise ValueError("Invalid argument type")
 
@@ -81,5 +80,6 @@ class ExcelReader:
 		else:
 			return cell.value
 
-xl = ExcelReader("/Users/rafy/Documents/hanen/map plotter/data/excel/LLLI IN CA NO ABC.xlsx")
-print(xl.gsc(0, (1, 3)))
+if __name__ == "__main__":
+	xl = ExcelReader("/Users/rafy/Documents/hanen/map plotter/data/excel/LLLI IN CA NO ABC.xlsx")
+	print(xl.gsc(0, (1, 3)))

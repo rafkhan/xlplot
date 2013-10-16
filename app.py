@@ -1,8 +1,14 @@
 import os
+import json
 from flask import Flask
 from flask import request
+from flask import Response 
 from flask import render_template
 from werkzeug import secure_filename
+
+import geocode
+import mapgen
+from excel import ExcelReader
 
 UPLOAD_FOLDER = os.path.join(
 		os.path.dirname(os.path.abspath(__file__)), 'uploads')
@@ -22,14 +28,16 @@ def upload():
 	if request.method == 'POST':
 		f = request.files['file']
 
-		#
-		# To save the file
-		#
-		#filename = secure_filename(f.filename)
-		#f.save(os.path.join(UPLOAD_FOLDER, filename))
+		# save the file
+		filename = secure_filename(f.filename)
+		full_fname = os.path.join(UPLOAD_FOLDER, filename)
+		f.save(full_fname)
 
-		return Response("{'hello':'world'}", 
-				mimetype='application/json')
+		xl = ExcelReader(full_fname)
+		loc_strings = xl.get_sheet_cols(0, 5)
+
+		return Response(json.dumps(loc_strings), mimetype='application/json')
+		
 
 	else:
 		#redirect
