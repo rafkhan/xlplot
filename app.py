@@ -42,6 +42,13 @@ def upload():
 	else:
 		#redirect
 		pass
+
+# TODO: Toggle this function's availability
+# TODO: REMOVE JSON!!! DIDNT DO BECAUSE ON BUS
+@app.route("/decode_location/<loc_json>")
+def decode_loc(loc_json):
+	loc = json.loads(loc_json)
+
 	
 
 
