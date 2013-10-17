@@ -1,17 +1,30 @@
 import os
+import sys
 import json
+
+# Flask imports
 from flask import Flask
 from flask import request
 from flask import Response 
 from flask import render_template
+from flask import make_response
 from werkzeug import secure_filename
 
+# Local package imports
 import geocode
 import mapgen
 from excel import ExcelReader
 
+
+#
+# Constants and other config bits
+#
 UPLOAD_FOLDER = os.path.join(
 		os.path.dirname(os.path.abspath(__file__)), 'uploads')
+
+CONFIG = {}
+CONFIG["SERVERSIDE_DECODE"] = False
+
 
 # Create/configure flask application
 app = Flask(__name__)
@@ -35,22 +48,32 @@ def upload():
 
 		xl = ExcelReader(full_fname)
 		loc_strings = xl.get_sheet_cols(0, 5)
+		data = {"serverside_decode": CONFIG["SERVERSIDE_DECODE"],
+				"locations": loc_strings}
 
-		return Response(json.dumps(loc_strings), mimetype='application/json')
+		return Response(json.dumps(data), mimetype='application/json')
 		
-
 	else:
 		#redirect
 		pass
 
-# TODO: Toggle this function's availability
-# TODO: REMOVE JSON!!! DIDNT DO BECAUSE ON BUS
-@app.route("/decode_location/<loc_json>")
-def decode_loc(loc_json):
-	loc = json.loads(loc_json)
 
+# TODO: Toggle this function's availability
+@app.route("/decode_location/<loc>")
+def decode_loc(loc):
+	if CONFIG["SERVERSIDE_DECODE"]:
+		latlng = geocode.decode_location(loc)
+
+	else:
+		response = make_response("{serverside_decode: false}", 404)
+		response.headers["Content-type"] = "application/json"
+		return response
 	
 
-
+	
 if __name__ == "__main__":
+
+	if "-srvdecode" in sys.argv:
+		CONFIG["SERVERSIDE_DECODE"] = True
+
 	app.run()

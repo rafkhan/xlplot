@@ -5,7 +5,7 @@ $(document).ready(function() {
 		// Make ajax request
 		$(this).ajaxSubmit({
 			success: function(data, status_code, jqxhr) {
-
+				
 			}
 		}); 
 
