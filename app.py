@@ -47,11 +47,19 @@ def upload():
 		f.save(full_fname)
 
 		xl = ExcelReader(full_fname)
-		loc_strings = xl.get_sheet_cols(0, 5)
-		data = {"serverside_decode": CONFIG["SERVERSIDE_DECODE"],
-				"locations": loc_strings}
+		loc_strings = xl.get_sheet_cols(0, (0,3))
 
-		return Response(json.dumps(data), mimetype='application/json')
+		# Should we decode here, or let the client do it
+		if CONFIG["SERVERSIDE_DECODE"]:
+			locs = []
+			for ls in loc_strings:
+				locs.append(geocode.decode_location(ls))
+			data = {"serverside_decode": true, "locations": locs}
+			return Response(json.dumps(data), mimetype='application/json')
+
+		else:
+			data = {"serverside_decode": False, "locations": loc_strings}
+			return Response(json.dumps(data), mimetype='application/json')
 		
 	else:
 		#redirect

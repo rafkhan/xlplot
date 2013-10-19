@@ -14,6 +14,7 @@ class ExcelReader:
 	#
 	# si is the sheet #
 	# ci can be a tuple or int
+	# SECOND VALUE OF TUPLE IS INCLUSIVE
 	def get_sheet_cols(self, si, ci):
 		bounds = self.check_bounds_type(ci)
 		values = [] # Values to geocode (the return value)
@@ -21,15 +22,24 @@ class ExcelReader:
 		num_rows = sheet.nrows - 1
 		curr_row = 0
 
+		# Return all cols
 		if type(bounds) == tuple:
-			while curr_row < num_rows:
+
+			# DO NOT CHANGE, MUST BE LESS THAN OR EQUAL TO
+			while curr_row <= num_rows:
 				temp_vals = []
 				for i in range(bounds[0], bounds[1] + 1):
 					cv = self.cellval(sheet.cell(curr_row, i), self.workbook.datemode)
-					temp_vals.append(cv)
+
+					# Truncate .0 from float when making a string
+					if type(cv) == float:
+						cv = int(cv)
+
+					temp_vals.append(str(cv))
 				values.append(" ".join(temp_vals))
 				curr_row += 1
 
+		# Return 1 col
 		if type(bounds) == int:
 			while curr_row < num_rows:
 				cv = self.cellval(sheet.cell(curr_row, bounds), self.workbook.datemode)
@@ -38,7 +48,7 @@ class ExcelReader:
 
 		return values;
 
-
+	# Ensure that the bounds are valid
 	def check_bounds_type(self, ci):
 		if type(ci) == tuple:
 			if ci[0] < ci[1]:
@@ -46,12 +56,10 @@ class ExcelReader:
 			else:
 				raise ValueError("Upper bound is lower than higher bound")
 
-		#
-		# TODO: Add list support
-		# 
-
 		elif type(ci) == int or type(ci) == float:
 			return int(round(ci))
+
+		# TODO: Add list support
 		else:
 			raise ValueError("Invalid argument type")
 
@@ -81,5 +89,6 @@ class ExcelReader:
 			return cell.value
 
 if __name__ == "__main__":
-	xl = ExcelReader("/Users/rafy/Documents/hanen/map plotter/data/excel/LLLI IN CA NO ABC.xlsx")
-	print(xl.gsc(0, (1, 3)))
+	#xl = ExcelReader("/Users/rafy/Documents/hanen/map plotter/data/excel/LLLI IN CA NO ABC.xlsx")
+	#print(xl.gsc(0, (1, 3)))
+	pass
