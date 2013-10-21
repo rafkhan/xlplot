@@ -12,7 +12,7 @@ from werkzeug import secure_filename
 
 # Local package imports
 import geocode
-import mapgen
+from xlmap import XlMap
 from excel import ExcelReader
 
 
@@ -33,10 +33,10 @@ app.config['DEBUG'] = True
 
 @app.route("/")
 def index():
-	return render_template("index.html")
+	return render_template("site/index.html")
 
 
-@app.route("/upload_excel", methods=['POST'])
+@app.route("/upload", methods=['POST'])
 def upload():
 	if request.method == 'POST':
 		f = request.files['file']
@@ -54,7 +54,7 @@ def upload():
 			locs = []
 			for ls in loc_strings:
 				locs.append(geocode.decode_location(ls))
-			data = {"serverside_decode": true, "locations": locs}
+			data = {"serverside_decode": True, "locations": locs}
 			return Response(json.dumps(data), mimetype='application/json')
 
 		else:
@@ -66,22 +66,18 @@ def upload():
 		pass
 
 
-# TODO: Toggle this function's availability
-@app.route("/decode_location/<loc>")
-def decode_loc(loc):
-	if CONFIG["SERVERSIDE_DECODE"]:
-		latlng = geocode.decode_location(loc)
-
-	else:
-		response = make_response("{serverside_decode: false}", 404)
-		response.headers["Content-type"] = "application/json"
-		return response
-	
-
 	
 if __name__ == "__main__":
 
 	if "-srvdecode" in sys.argv:
 		CONFIG["SERVERSIDE_DECODE"] = True
+
+	# THIS WILL HAPPEN SOON
+	if "-redis" in sys.argv:
+		#import redis
+		#import database
+
+		CONFIG["USE_DB"] = True
+		#set username/pw n sheit
 
 	app.run()

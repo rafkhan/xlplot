@@ -68,7 +68,7 @@ class ExcelReader:
 	#
 	# Returns python types of corresponding excel types:
 	# - numeric excel dates => python datetime
-	# - empty cell => None
+	# - empty cell => "" 
 	# - excel bool => Boolean
 	def cellval(self, cell, datemode):
 		if cell.ctype == xlrd.XL_CELL_DATE:
@@ -80,6 +80,7 @@ class ExcelReader:
 						datetuple[3], datetuple[4], datetuple[5])
 
 		elif cell.ctype == xlrd.XL_CELL_EMPTY:
+			# Has to be empty str so string conversion of None doesn't return "None"
 			return "" 
 
 		elif cell.ctype == xlrd.XL_CELL_BOOLEAN:
