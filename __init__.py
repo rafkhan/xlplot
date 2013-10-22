@@ -1,1 +1,1 @@
-__all__ = ["geocode", "xlplot_web"]
+__all__ = ["geocode", "excel"]
