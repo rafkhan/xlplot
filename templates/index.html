@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="/static/css/map.css" />
+		<link rel="stylesheet" type="text/css" href="/static/css/pure-grids.css" />
+	</head>
+
+	<body>
+		<div class="pure-g-r" id="container">
+			<div class="pure-u-1-6" id="left-bar">
+				<div id="left-bar-internal">
+
+					<h1>XLPlot</h1>
+
+					<form id="upload_form" action="/upload" method="post"
+						enctype="multipart/form-data">
+
+						<input type="file" name="file" />
+						<input type="submit" />
+					</form>
+
+
+				</div>
+			</div>
+
+			<div id="map-col" class="pure-u-5-6">
+				<div id="map-canvas"></div>
+			</div>
+
+		
+			<script src="/static/js/jquery.js"></script>
+			<script src="/static/js/jquery.form.js"></script>
+			<script src="/static/js/angular.js"></script>
+			<script 
+src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=visualization">
+			</script>		
+			<script src="/static/js/home.js"></script>
+			<script src="/static/js/xlmap.js"></script>
+		</div>
+	</body>
+</html>
