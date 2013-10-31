@@ -2,7 +2,7 @@ import os
 import sys
 import json
 
-# Flask imports
+# 3rd party imports
 from flask import Flask
 from flask import request
 from flask import Response 
@@ -10,17 +10,22 @@ from flask import render_template
 from flask import make_response
 from werkzeug import secure_filename
 
+import redis
+
 # Local package imports
+import database
 import geocode
-from xlmap import XlMap
 from excel import ExcelReader
 
 
 #
 # Constants and other config bits
 #
-UPLOAD_FOLDER = os.path.join(
-		os.path.dirname(os.path.abspath(__file__)), 'uploads')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, 'data')
+JSON_DIR = os.path.join(DATA_DIR, 'json')
+UPLOAD_DIR = os.path.join(DATA_DIR, 'uploads')
+
 
 CONFIG = {}
 CONFIG["SERVERSIDE_DECODE"] = False
@@ -33,7 +38,8 @@ app.config['DEBUG'] = True
 
 @app.route("/")
 def index():
-	return render_template("index.html")
+	return Response(open("templates/index.html", "r").read())
+	#return render_template("index.html")
 
 
 @app.route("/upload", methods=['POST'])
@@ -43,7 +49,7 @@ def upload():
 
 		# save the file
 		filename = secure_filename(f.filename)
-		full_fname = os.path.join(UPLOAD_FOLDER, filename)
+		full_fname = os.path.join(UPLOAD_DIR, filename)
 		f.save(full_fname)
 
 		xl = ExcelReader(full_fname)
@@ -65,19 +71,11 @@ def upload():
 		#redirect
 		pass
 
-
 	
 if __name__ == "__main__":
 
 	if "-srvdecode" in sys.argv:
+		print("Starting with servside geocoding.")
 		CONFIG["SERVERSIDE_DECODE"] = True
-
-	# THIS WILL HAPPEN SOON
-	if "-redis" in sys.argv:
-		#import redis
-		#import database
-
-		CONFIG["USE_DB"] = True
-		#set username/pw n sheit
 
 	app.run()

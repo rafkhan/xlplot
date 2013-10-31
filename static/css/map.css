@@ -25,9 +25,12 @@ html, body {
 	background-image: url('/static/img/left-gradient.png');
 	background-repeat: repeat-y;
 	background-position: right;
-	overflow: scroll
+	overflow: auto;
 }
 
 #left-bar-internal {
 	padding: 5px;
+}
+
+#map-list {
 }

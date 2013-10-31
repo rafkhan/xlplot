@@ -16,8 +16,8 @@ XLPlot.prototype.addMarkers = function(data) {
 	var len = data.length;
 	for(i = 0; i < len; i++) {
 		var marker = new google.maps.Marker({    
-			position: new google.maps.LatLng(data[i].lat, data[i].lng),
-			map: this.map
-		});  
+      position: new google.maps.LatLng(data[i].lat, data[i].lng),
+      map: this.map
+    });  
 	}
 }
