@@ -1,11 +1,13 @@
 import json
-from pymongo import MongoClient
+import pymongo
+
+DB_TABLE = "xlplot_mapset"
 
 class MapSets:
 	def __init__(self):
-		self.client = MongoClient('localhost', 27017)
-		self.db = self.client.xlplot
-		self.maps = self.db.maps
+		client = MongoClient()
+		db = client.database
+		collection = db.mapsets
 
 	def add_map(coord_data):
 		pass

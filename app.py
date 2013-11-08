@@ -13,7 +13,7 @@ from werkzeug import secure_filename
 import redis
 
 # Local package imports
-import database
+#import database
 import geocode
 from excel import ExcelReader
 
