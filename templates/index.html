@@ -1,8 +1,14 @@
 <!DOCTYPE html>
-<html ng-app>
+<html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="/static/css/map.css" />
 		<link rel="stylesheet" type="text/css" href="/static/css/pure-grids.css" />
+		<script src="/static/js/lib/jquery.js"></script>
+		<script src="/static/js/lib/jquery.form.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=visualization">
+		</script>
+
+		<script src="/static/js/xlplot.js"></script>
 	</head>
 
 	<body>
@@ -20,6 +26,8 @@
 					</form>
 
 					<div id="map-list">
+						<div>
+						</div>
 					</div>
 	
 				</div>
@@ -28,14 +36,8 @@
 			<div id="map-col" class="pure-u-5-6">
 				<div id="map-canvas"></div>
 			</div>
-		
-			<script src="/static/js/lib/jquery.js"></script>
-			<script src="/static/js/lib/jquery.form.js"></script>
-			<script src="/static/js/lib/angular.js"></script>
-			<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=visualization">
-			</script>		
-			<script src="/static/js/home.js"></script>
-			<script src="/static/js/xlmap.js"></script>
+
+
 		</div>
 	</body>
 </html>

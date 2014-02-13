@@ -10,10 +10,8 @@ from flask import render_template
 from flask import make_response
 from werkzeug import secure_filename
 
-import redis
-
 # Local package imports
-#import database
+import database
 import geocode
 from excel import ExcelReader
 
@@ -39,7 +37,6 @@ app.config['DEBUG'] = True
 @app.route("/")
 def index():
 	return Response(open("templates/index.html", "r").read())
-	#return render_template("index.html")
 
 
 @app.route("/upload", methods=['POST'])
@@ -66,11 +63,28 @@ def upload():
 		else:
 			data = {"serverside_decode": False, "locations": loc_strings}
 			return Response(json.dumps(data), mimetype='application/json')
-		
+
 	else:
 		#redirect
 		pass
 
+
+
+@app.route("/map")
+def allmaps():
+	data = database.get_locs()
+	return Response(json.dumps(data), mimetype='application/json')
+
+@app.route("/map/<map_id>")
+def getmap(map_id):
+	data = database.get_locs(map_id)
+	return Response(json.dumps(data), mimetype='application/json')
+
+@app.route("/test")
+def test():
+	data = list(database.get_locs())
+	print(data)
+	return Response(json.dumps(data), mimetype='application/json')
 	
 if __name__ == "__main__":
 

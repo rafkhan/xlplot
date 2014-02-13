@@ -1,14 +1,15 @@
-import json
-import pymongo
+from pymongo import MongoClient
 
-DB_TABLE = "xlplot_mapset"
+client = MongoClient()
+db = client.xlplot_database
+loc_col = db.location_collection
 
-class MapSets:
-	def __init__(self):
-		client = MongoClient()
-		db = client.database
-		collection = db.mapsets
+def add_locs(locs):
+	loc_col.insert({"locations": locs, "date": datetime.datetime.utcnow()})
 
-	def add_map(coord_data):
-		pass
-		
+def get_locs(loc_id = None):
+	#get all
+	if loc_id == None:
+		return loc_col.find()
+	else:
+		return loc_col.find(loc_id)
