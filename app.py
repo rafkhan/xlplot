@@ -31,15 +31,10 @@ CONFIG["SERVERSIDE_DECODE"] = False
 
 # Create/configure flask application
 app = Flask(__name__)
-app.config['DEBUG'] = True
+app.debug = True
 
 
-@app.route("/")
-def index():
-	return Response(open("templates/index.html", "r").read())
-
-
-@app.route("/upload", methods=['POST'])
+@app.route("/api/upload", methods=['POST'])
 def upload():
 	if request.method == 'POST':
 		f = request.files['file']
@@ -69,13 +64,12 @@ def upload():
 		pass
 
 
-
-@app.route("/map")
+@app.route("/api/map")
 def allmaps():
 	data = database.get_locs()
 	return Response(json.dumps(data), mimetype='application/json')
 
-@app.route("/map/<map_id>")
+@app.route("/api/map/<map_id>")
 def getmap(map_id):
 	data = database.get_locs(map_id)
 	return Response(json.dumps(data), mimetype='application/json')
@@ -85,6 +79,11 @@ def test():
 	data = list(database.get_locs())
 	print(data)
 	return Response(json.dumps(data), mimetype='application/json')
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+  return Response(open("templates/index.html", "r").read())
 	
 if __name__ == "__main__":
 
