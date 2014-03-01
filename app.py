@@ -26,7 +26,7 @@ UPLOAD_DIR = os.path.join(DATA_DIR, 'uploads')
 
 
 CONFIG = {}
-CONFIG["SERVERSIDE_DECODE"] = False
+CONFIG["SERVERSIDE_DECODE"] = True
 
 
 # Create/configure flask application
