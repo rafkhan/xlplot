@@ -11,7 +11,7 @@ from flask import make_response
 from werkzeug import secure_filename
 
 # Local package imports
-import database
+#import database
 import geocode
 from excel import ExcelReader
 
