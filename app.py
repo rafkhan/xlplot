@@ -30,6 +30,8 @@ CONFIG["SERVERSIDE_DECODE"] = False
 
 
 # Create/configure flask application
+DEV = True if os.environ['DEV'] else False
+
 app = Flask(__name__)
 app.debug = True
 
@@ -64,15 +66,15 @@ def upload():
 		pass
 
 
+test_data = [{"asd": "qwe"}, {"asd": "ZXC"}]
+
 @app.route("/api/map")
 def allmaps():
-	data = database.get_locs()
-	return Response(json.dumps(data), mimetype='application/json')
+  return Response(json.dumps(test_data), mimetype='application/json')
 
 @app.route("/api/map/<map_id>")
 def getmap(map_id):
-	data = database.get_locs(map_id)
-	return Response(json.dumps(data), mimetype='application/json')
+	return Response(json.dumps(test_data), mimetype='application/json')
 
 @app.route("/test")
 def test():
