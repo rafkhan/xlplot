@@ -37,6 +37,8 @@ app = Flask(__name__)
 app.debug = True
 
 
+print(sys.version_info)
+
 @app.route("/api/upload", methods=['POST'])
 def upload():
 	if request.method == 'POST':
