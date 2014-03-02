@@ -104,4 +104,4 @@ if __name__ == "__main__":
 		print("Starting with servside geocoding.")
 		CONFIG["SERVERSIDE_DECODE"] = True
 
-	app.run()
+	app.run(host='0.0.0.0', port=5000)
