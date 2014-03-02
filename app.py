@@ -85,11 +85,11 @@ def test():
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-  index_page()
+  return index_page()
 
 @app.route('/')
 def lole():
-  index_page()
+  return index_page()
 
 
 def index_page():
