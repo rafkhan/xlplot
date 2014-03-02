@@ -85,6 +85,14 @@ def test():
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
+  index_page()
+
+@app.route('/')
+def lole():
+  index_page()
+
+
+def index_page():
   return Response(open("templates/index.html", "r").read())
 	
 if __name__ == "__main__":
