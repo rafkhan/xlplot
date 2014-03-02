@@ -30,7 +30,8 @@ CONFIG["SERVERSIDE_DECODE"] = True
 
 
 # Create/configure flask application
-DEV = True if os.environ['DEV'] else False
+#DEV = True if os.environ['DEV'] else False
+
 
 app = Flask(__name__)
 app.debug = True
