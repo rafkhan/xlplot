@@ -1,21 +1,25 @@
 var xlplotApp = angular.module('xlplotApp', []);
 
 xlplotApp.controller('UploadFormController', 
-function($scope, $fileUpload, $mapService) {
+  function($scope, $fileUpload, $mapService) {
 
-  $scope.onSubmit = function() {
-    var file = $scope.excelFileInput;
-    var uploadUrl = '/api/upload';
-    $fileUpload.uploadFileToUrl(file, uploadUrl)
-      .success(function(data, status, headers, config) {
-        $mapService.addMarkers(data.locations);
-      })
-      .error(function(data, status, headers, config) {
-        $mapService.addMarkers(data.locations);
-      });
-  };
-})
+    $scope.onSubmit = function() {
+      var file = $scope.excelFileInput;
+      var uploadUrl = '/api/upload';
+      $fileUpload.uploadFileToUrl(file, uploadUrl)
+        .success(function(data, status, headers, config) {
+          $mapService.addMarkers(data.locations);
+        })
+        .error(function(data, status, headers, config) {
+          alert(data);
+        });
+    };
+  })
 
+/*
+ * fileModel and $fileUpload were found online,
+ * will update with source when I can
+ */
 .directive('fileModel', ['$parse', function ($parse) {
   return {
     restrict: 'A',
@@ -59,6 +63,9 @@ function($scope, $fileUpload, $mapService) {
   };
 })
 
+/*
+ * Run the app!
+ */
 .run(function($rootScope) {
   var mapOptions = {
     zoom: 3, 

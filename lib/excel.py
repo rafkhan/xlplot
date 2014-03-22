@@ -19,7 +19,10 @@ class ExcelReader:
 		bounds = self.check_bounds_type(ci)
 		values = [] # Values to geocode (the return value)
 		sheet = self.worksheets[si]
+
+		#TODO look at this
 		num_rows = sheet.nrows - 1
+
 		curr_row = 0
 
 		# Return all cols

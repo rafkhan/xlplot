@@ -11,18 +11,15 @@ from flask import make_response
 from werkzeug import secure_filename
 
 # Local package imports
-#import database
-import geocode
-from excel import ExcelReader
+from lib import geocode
+from lib.excel import ExcelReader
 
 
 #
 # Constants and other config bits
 #
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE_DIR, 'data')
-JSON_DIR = os.path.join(DATA_DIR, 'json')
-UPLOAD_DIR = os.path.join(DATA_DIR, 'uploads')
+UPLOAD_DIR = os.path.join(BASE_DIR, 'uploads')
 
 
 CONFIG = {}
@@ -68,22 +65,6 @@ def upload():
 		#redirect
 		pass
 
-
-test_data = [{"asd": "qwe"}, {"asd": "ZXC"}]
-
-@app.route("/api/map")
-def allmaps():
-  return Response(json.dumps(test_data), mimetype='application/json')
-
-@app.route("/api/map/<map_id>")
-def getmap(map_id):
-	return Response(json.dumps(test_data), mimetype='application/json')
-
-@app.route("/test")
-def test():
-	data = list(database.get_locs())
-	print(data)
-	return Response(json.dumps(data), mimetype='application/json')
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
